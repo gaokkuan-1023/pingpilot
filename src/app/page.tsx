@@ -1,65 +1,110 @@
-import Image from "next/image";
+import Link from "next/link"
+import { auth } from "@/lib/auth"
 
-export default function Home() {
+export default async function HomePage() {
+  const session = await auth()
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <header className="border-b border-gray-100">
+        <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
+          <Link href="/" className="text-xl font-bold tracking-tight">
+            SaaS Starter
+          </Link>
+          <nav className="flex items-center gap-4">
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm text-gray-600 hover:text-gray-900">
+                  Log in
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
+          </nav>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </header>
+
+      <main className="flex-1">
+        <section className="px-4 pt-24 pb-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-5xl font-bold tracking-tight leading-tight">
+              Your SaaS, shipped in hours
+            </h1>
+            <p className="mt-6 text-lg text-gray-500 leading-relaxed">
+              A production-ready Next.js starter with authentication, payments,
+              and a dashboard — everything you need to start charging customers today.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-4">
+              <Link
+                href="/signup"
+                className="rounded-lg bg-gray-900 px-6 py-3 text-sm font-medium text-white hover:bg-gray-800"
+              >
+                Try the demo
+              </Link>
+              <a
+                href="#features"
+                className="rounded-lg border border-gray-200 px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                What&apos;s included
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="border-t border-gray-100 px-4 py-20">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center text-3xl font-bold">Everything baked in</h2>
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {[
+                { title: "Email + password auth", desc: "NextAuth v5 with credentials provider. Signup, login, logout, session management — all working out of the box." },
+                { title: "Stripe subscriptions", desc: "Checkout flow, webhook handler, customer portal, and plan-based access control. Ready for your pricing table." },
+                { title: "Dashboard layout", desc: "Responsive sidebar nav, protected routes, user context. Drop in your own pages and features." },
+                { title: "Prisma + SQLite", desc: "Type-safe database with migrations. Swap to Postgres in one line when you're ready." },
+                { title: "Tailwind CSS", desc: "Utility-first styling. Clean, minimal design system you can customize in minutes." },
+                { title: "Server actions", desc: "React 19 useActionState forms. Type-safe mutations without API routes." },
+              ].map((f) => (
+                <div key={f.title} className="rounded-xl border border-gray-100 p-5">
+                  <h3 className="font-semibold text-sm">{f.title}</h3>
+                  <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-gray-100 px-4 py-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold">Start building today</h2>
+            <p className="mt-3 text-gray-500">
+              Clone, configure 3 env vars, deploy. You&apos;re charging customers by dinner.
+            </p>
+            <div className="mt-8 flex justify-center gap-4">
+              <Link
+                href="/signup"
+                className="rounded-lg bg-gray-900 px-6 py-3 text-sm font-medium text-white hover:bg-gray-800"
+              >
+                Try the live demo
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
-    </div>
-  );
+
+      <footer className="border-t border-gray-100 px-4 py-8 text-center text-sm text-gray-400">
+        SaaS Starter — Ship faster.
+      </footer>
+    </>
+  )
 }
