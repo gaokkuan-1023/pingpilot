@@ -1,5 +1,15 @@
-[phases.install]
-nixPkgs = ["nodejs_22"]
+# https://nixpacks.com/docs/configuration
+[node]
+version = "22"
 
 [phases.setup]
-nixPkgs = ["nodejs_22"]
+nixPkgs = ["openssl"]
+
+[phases.install]
+commands = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"
