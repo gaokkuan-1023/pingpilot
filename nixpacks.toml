@@ -1,9 +1,7 @@
 # https://nixpacks.com/docs/configuration
-[node]
-version = "22"
 
 [phases.setup]
-nixPkgs = ["openssl"]
+nixPkgs = ["nodejs_22", "openssl"]
 
 [phases.install]
 commands = ["npm ci"]
